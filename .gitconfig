@@ -1,0 +1,7 @@
+[user]
+  name = kanarne
+  email = kanarne@gmail.com
+[core]
+  excludesfile = ~/.gitignore
+  editor = vim
+  

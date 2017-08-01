@@ -11,6 +11,8 @@ call plug#begin('~/.vim/plugged')
   Plug 'scrooloose/nerdtree'
   Plug 'altercation/vim-colors-solarized'
   Plug 'mileszs/ack.vim'
+  Plug 'fatih/vim-go'
+  Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 call plug#end()
 
 let g:lightline = {

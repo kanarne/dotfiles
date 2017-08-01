@@ -1,5 +1,13 @@
 export LESS='--tabs=4 --no-init --LONG-PROMPT --ignore-case'
 export GREP_OPTIONS='--color=auto'
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH=$PATH:$PYENV_ROOT/bin
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+export GOROOT=/usr/local/go
+export PATH=$GOROOT/bin:$PATH
+export GOPATH=$HOME/.go
+export PATH=$GOPATH/bin:$PATH
 
 bindkey -e
 bindkey "^[[Z" reverse-menu-complete

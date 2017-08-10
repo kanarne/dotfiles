@@ -1,4 +1,7 @@
+export EDITOR=vim
 export LESS='--tabs=4 --no-init --LONG-PROMPT --ignore-case'
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 export GREP_OPTIONS='--color=auto'
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH=$PATH:$PYENV_ROOT/bin
@@ -8,13 +11,12 @@ export GOROOT=/usr/local/go
 export PATH=$GOROOT/bin:$PATH
 export GOPATH=$HOME/.go
 export PATH=$GOPATH/bin:$PATH
+export GCLOUD=$HOME/google-cloud-sdk/
+export PATH=$GCLOUD/bin:$PATH
 
 bindkey -e
-bindkey "^[[Z" reverse-menu-complete
-bindkey '^[^B' vi-backward-blank-word
-bindkey '^[^F' vi-forward-blank-word
-bindkey '^[^U' backward-delete-word
-bindkey '^[^K' delete-word
+bindkey '^y' forward-word
+bindkey '^t' backward-word
 
 case "${OSTYPE}" in
 darwin*)
@@ -56,20 +58,20 @@ setopt hist_ignore_space
 setopt extended_glob
 
 autoload -Uz select-word-style
+select-word-style default
 autoload -Uz compinit
 compinit
 autoload -Uz colors
 colors
 
-zstyle ':completion:*:default' menu select=2
 zstyle ':zle:*' word-chars " /=;@:{},|"
 zstyle ':zle:*' word-style unspecified
+zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' ignore-parents parent pwd ..
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
                      /usr/sbin /usr/bin /sbin /bin
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
-
 
 autoload smart-insert-last-word
 zle -N insert-last-word smart-insert-last-word
@@ -82,14 +84,12 @@ zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-completions"
-zplug "b4b4r07/enhancd", use:init.sh
 if ! zplug check; then
     zplug install
 fi
 zplug load
 
 function history-fzf() {
-  export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
   local tac
 
   if which tac > /dev/null; then
@@ -105,6 +105,44 @@ function history-fzf() {
 }
 zle -N history-fzf
 bindkey '^r' history-fzf
+
+function search-fzf() {
+  local filepath="$(find . | grep -v '.git*'| fzf)"
+
+  zle reset-prompt
+  [ -z "$filepath" ] && return
+  if [ -n "$LBUFFER" ]; then
+    BUFFEr="$LBUFFER$filepath"
+  else
+    if [ -d "$filepath" ]; then
+      BUFFER="cd $filepath"
+    elif [ -f "$filepath" ]; then
+      BUFFER="$EDITOR $filepath"
+    fi
+  fi
+  CURSOR=$#BUFFER
+}
+zle -N search-fzf
+bindkey '^o' search-fzf
+
+function find-fzf() {
+  local filepath="$(ag . -i --hidden | fzf)"
+
+  zle reset-prompt
+  [ -z "$filepath" ] && return
+  if [ -n "$LBUFFER" ]; then
+    BUFFEr="$LBUFFER$filepath"
+  else
+    if [ -d "$filepath" ]; then
+      BUFFER="cd $filepath"
+    elif [ -f "$filepath" ]; then
+      BUFFER="$EDITOR $filepath"
+    fi
+  fi
+  CURSOR=$#BUFFER
+}
+zle -N find-fzf
+bindkey '^_' find-fzf
 
 function cd()
 {

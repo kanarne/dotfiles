@@ -129,10 +129,21 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR>
 nnoremap <silent> <expr> <Leader><Leader> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
-nnoremap <silent> <Leader><Enter>  :Buffers<CR>
-nnoremap <silent> <Leader>ag       :Ag<CR>
+nnoremap <Leader>b                 :Buffers<CR>
+nnoremap <Leader>ag                :Ag<CR>
+nnoremap <Leader>f                 :GFiles<CR>
+nnoremap <Leader>d                 :Gdiff<CR>
 nnoremap <silent><C-n>             :NERDTreeToggle<CR>
 nnoremap <silent> <C-p>            :QuickRun<CR>
+nnoremap <silent> <leader>e :call fzf#run({
+\   'down': '40%',
+\   'sink': 'edit' })<CR>
+nnoremap <silent> <Leader>s :call fzf#run({
+\   'down': '40%',
+\   'sink': 'botright split' })<CR>
+nnoremap <silent> <Leader>v :call fzf#run({
+\   'right': winwidth('.') / 2,
+\   'sink':  'vertical botright split' })<CR>
 cmap w!! w !sudo tee % > /dev/null
 
 highlight Folded ctermfg=130 ctermbg=0

@@ -2,7 +2,6 @@ export EDITOR=vim
 export LESS='--tabs=4 --no-init --LONG-PROMPT --ignore-case'
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
-export GREP_OPTIONS='--color=auto'
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH=$PATH:$PYENV_ROOT/bin
 eval "$(pyenv init -)"
@@ -35,6 +34,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias fuck='eval $(thefuck $(fc -ln -1))'
+alias brew="env PATH=${PATH/${HOME}\/\.pyenv\/shims:/} brew"
 
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
@@ -88,6 +88,11 @@ if ! zplug check; then
     zplug install
 fi
 zplug load
+
+PROMPT='%(?.%F{green}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
+RPROMPT='%F{242}[%D %*]'
+[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%F{magenta}%n%f %F{white}%M%f'
+[[ $UID -eq 0 ]] && prompt_pure_username='%F{magenta}%n%f %F{white}%M%f'
 
 function history-fzf() {
   local tac

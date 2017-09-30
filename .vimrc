@@ -110,6 +110,7 @@ set laststatus=2
 set showcmd
 set backspace=indent,eol,start
 set scrolloff=3
+set clipboard+=unnamed
 
 let mapleader = ' '
 let NERDTreeShowHidden=1

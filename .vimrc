@@ -112,37 +112,36 @@ set backspace=indent,eol,start
 set scrolloff=3
 set clipboard+=unnamed
 
-let mapleader = ' '
+let mapleader = "\<Space>"
 let NERDTreeShowHidden=1
 
 noremap <CR> o<Esc>
-cnoremap <C-a> <Home>
-inoremap <C-a> <Home>
-nnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-inoremap <C-e> <End>
-nnoremap <C-e> <End>
 nnoremap <silent> j gj
 nnoremap <silent> k gk
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR>
-nnoremap <silent> <expr> <Leader><Leader> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
-nnoremap <Leader>b                 :Buffers<CR>
-nnoremap <Leader>ag                :Ag<CR>
-nnoremap <Leader>f                 :GFiles<CR>
-nnoremap <Leader>d                 :Gdiff<CR>
-nnoremap <silent><C-n>             :NERDTreeToggle<CR>
-nnoremap <silent> <C-p>            :QuickRun<CR>
-nnoremap <silent> <leader>e :call fzf#run({
+noremap <S-h> ^
+noremap <S-j> }
+noremap <S-k> {
+noremap <S-l> $
+nnoremap <Space>/  *
+nnoremap <C-h> <C-w> h
+nnoremap <C-j> <C-w> j
+nnoremap <C-k> <C-w> k
+nnoremap <C-l> <C-w> l
+noremap <Space>s :%s/
+nnoremap <silent> <Esc><Esc>  :<C-u>nohlsearch<CR>
+nnoremap <Leader>b            :Buffers<CR>
+nnoremap <Leader>ag           :Ag<CR>
+nnoremap <Leader>f            :GFiles<CR>
+nnoremap <Leader>d            :Gdiff<CR>
+nnoremap <Leader>n            :NERDTreeToggle<CR>
+nnoremap <Leader>q            :QuickRun<CR>
+noremap <silent> <leader>e   :call fzf#run({
 \   'down': '40%',
 \   'sink': 'edit' })<CR>
-nnoremap <silent> <Leader>s :call fzf#run({
+nnoremap <silent> <Leader>f  :call fzf#run({
 \   'down': '40%',
 \   'sink': 'botright split' })<CR>
-nnoremap <silent> <Leader>v :call fzf#run({
+nnoremap <silent> <Leader>v   :call fzf#run({
 \   'right': winwidth('.') / 2,
 \   'sink':  'vertical botright split' })<CR>
 cmap w!! w !sudo tee % > /dev/null

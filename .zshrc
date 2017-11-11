@@ -86,7 +86,11 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-completions"
 zplug load
 
-PROMPT='%(?.%F{green}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
+function virtual_env_info {
+  [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
+}
+
+PROMPT='$(virtual_env_info)%(?.%F{green}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
 RPROMPT='%F{242}[%D %*]'
 [[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%F{magenta}%n%f %F{white}%M%f'
 [[ $UID -eq 0 ]] && prompt_pure_username='%F{magenta}%n%f %F{white}%M%f'

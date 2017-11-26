@@ -13,6 +13,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'mileszs/ack.vim'
   Plug 'fatih/vim-go'
   Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+  Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 let g:lightline = {
@@ -34,6 +35,9 @@ let g:lightline = {
         \ }
         \ }
 
+let g:lightline.component = {
+    \ 'lineinfo': '%3l/%L : %-2v'}
+
 function! LightlineModified()
   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
@@ -47,7 +51,7 @@ function! LightlineFilename()
         \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
         \  &ft == 'unite' ? unite#get_status_string() :
         \  &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ '' != expand('%:p') ? expand('%:p') : '[No Name]') .
         \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
 endfunction
 
@@ -127,6 +131,12 @@ nnoremap <C-h> <C-w> h
 nnoremap <C-j> <C-w> j
 nnoremap <C-k> <C-w> k
 nnoremap <C-l> <C-w> l
+nnoremap <C-p> :FZFFileList<CR>
+command! FZFFileList call fzf#run({
+            \ 'right': '40%',
+            \ 'source': 'find . -type d -name .git -prune -o ! -name .DS_Store',
+            \ 'sink': 'e'})
+
 noremap <Space>s :%s/
 nnoremap <silent> <Esc><Esc>  :<C-u>nohlsearch<CR>
 nnoremap <Leader>b            :Buffers<CR>
@@ -135,15 +145,6 @@ nnoremap <Leader>f            :GFiles<CR>
 nnoremap <Leader>d            :Gdiff<CR>
 nnoremap <Leader>n            :NERDTreeToggle<CR>
 nnoremap <Leader>q            :QuickRun<CR>
-noremap <silent> <leader>e   :call fzf#run({
-\   'down': '40%',
-\   'sink': 'edit' })<CR>
-nnoremap <silent> <Leader>f  :call fzf#run({
-\   'down': '40%',
-\   'sink': 'botright split' })<CR>
-nnoremap <silent> <Leader>v   :call fzf#run({
-\   'right': winwidth('.') / 2,
-\   'sink':  'vertical botright split' })<CR>
 cmap w!! w !sudo tee % > /dev/null
 
 highlight Folded ctermfg=130 ctermbg=0

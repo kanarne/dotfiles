@@ -16,8 +16,10 @@ if [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   if [ ! -d $HOME/.zplug ]; then
     git clone https://github.com/zplug/zplug $HOME/.zplug
   fi
+  if [ ! -d $HOME/.vim ]; then
   curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  fi
 fi
 
 chsh -s $(which zsh)

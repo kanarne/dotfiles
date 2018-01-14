@@ -1,5 +1,8 @@
 set encoding=utf-8
 
+filetype off
+filetype plugin indent off
+
 call plug#begin('~/.vim/plugged')
   Plug 'itchyny/lightline.vim'
   Plug 'osyo-manga/vim-anzu'
@@ -89,6 +92,7 @@ augroup anzu-update-search-status
   autocmd CursorHold,CursorHoldI,WinLeave,TabLeave * call anzu#clear_search_status()
 augroup END
 
+syntax enable
 set background=dark
 colorscheme solarized
 
@@ -114,12 +118,20 @@ set laststatus=2
 set showcmd
 set backspace=indent,eol,start
 set scrolloff=3
-set clipboard+=unnamed
+if has('win32') || has('win64') || has('mac')
+  set clipboard=unnamed
+else
+  set clipboard=unnamed,unnamedplus
+endif
 
 let mapleader = "\<Space>"
 let NERDTreeShowHidden=1
 
-noremap <CR> o<Esc>
+augroup QuickFixCmd
+  autocmd!
+  autocmd QuickFixCmdPost *grep* cwindow
+augroup END
+
 nnoremap <silent> j gj
 nnoremap <silent> k gk
 noremap <S-h> ^
@@ -149,4 +161,6 @@ cmap w!! w !sudo tee % > /dev/null
 
 highlight Folded ctermfg=130 ctermbg=0
 
+filetype plugin indent on
 set t_Co=256
+set secure
